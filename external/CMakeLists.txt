@@ -21,7 +21,13 @@ ExternalProject_Add(halide_project
     INSTALL_DIR ${CMAKE_BINARY_DIR}/halide
     CMAKE_ARGS
         -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_INSTALL_PREFIX=<INSTALL_DIR>
         -DLLVM_DIR=${llvm_project_INSTALL_DIR}/lib/cmake/llvm
+        -DWITH_PYTHON_BINDINGS=OFF
+        -DWITH_TESTS=OFF
+        -DWITH_TUTORIALS=OFF
+        -DWITH_DOCS=OFF
+        -DBUILD_SHARED_LIBS=OFF # to disable building autoscheduler
     BUILD_COMMAND ${CMAKE_COMMAND} --build <BINARY_DIR> --parallel --target Halide
     DEPENDS llvm_project
     BUILD_ALWAYS TRUE
