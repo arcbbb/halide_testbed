@@ -1,7 +1,5 @@
 #!/bin/bash
 
-module load python
-
 build_llvm()
 {
   src=$PWD/external/llvm-project/llvm
@@ -19,7 +17,7 @@ build_llvm()
         -DLLVM_ENABLE_RTTI=ON        \
         -DCMAKE_CROSSCOMPILING=True  \
         -DCMAKE_BUILD_TYPE=Release &&
-    cmake --build . --parallel 25 &&
+    cmake --build . --parallel &&
     cmake --install .
   )
 }
@@ -27,11 +25,14 @@ build_llvm()
 build_halide()
 {
   llvmdir=$PWD/install-llvm/lib/cmake/llvm
+  build=$PWD/build-halide
   (
-    mkdir -p build-halide
-    cd build-halide
-    cmake .. -DLLVM_DIR=$llvmdir
-    make -j25 halide_project
+    mkdir -p $build
+    cd $build
+    cmake ..                        \
+        -DCMAKE_BUILD_TYPE=Release  \
+        -DLLVM_DIR=$llvmdir
+    make -j test
   )
 }
 
